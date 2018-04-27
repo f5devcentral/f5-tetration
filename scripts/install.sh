@@ -7,12 +7,12 @@ echo "\033[0;31m Attention --->  Please Enter Contrl C to Quit this Program ....
 echo "\033[0;32m This script will automatically deploy the iRules required for Tetration \033[0m \n"
 while :
 do
-echo "\033[1mPlease enter BIG-IP Management IP : \033[0m \c "
+echo "\033[1mPlease enter BIG-IP Management IP : \033[0m \c"
 read   BIGIP_MGMT_IP
-echo "Please enter BIG-IP admin user   "
-#read BIGIP_ADMIN
-echo "Please enter BIG-IP admin password "
-#read BIGIP_PASS
+echo "\033[1mPlease enter BIG-IP ADMIN USER : \033[0m \c"
+read BIGIP_ADMIN
+echo "\033[1mPlease enter BIG-IP PASSWORD : \033[0m \c"
+read BIGIP_PASS
 
 #Check if Irules Exists locally on your computer
 
@@ -42,32 +42,32 @@ fi
 echo "\033[1mChecking if irule Exists on BIG-IP ...... \033[0m \c "
 sleep 2
 
-response=$(curl --write-out %{http_code} --silent --output /dev/null -k --user admin:admin -H "Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/rule/Tetration_UDP_L4_ipfix)
+response=$(curl --write-out %{http_code} --silent --output /dev/null -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/rule/Tetration_UDP_L4_ipfix)
 if [ "$response" == 200 ] 
   then 
   #Update Irule Prime, make sure user clone the new repo
-  curl -k --user admin:admin -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH -d @Tetration_UDP_L4_ipfix.json https://$BIGIP_MGMT_IP/mgmt/tm/ltm/rule/Tetration_UDP_L4_ipfix | python -m json.tool
+  curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH -d @Tetration_UDP_L4_ipfix.json https://$BIGIP_MGMT_IP/mgmt/tm/ltm/rule/Tetration_UDP_L4_ipfix | python -m json.tool
   echo "\033[1m UDP Irule exists on BIG-IP already \033[0m \c"
 else
   sleep 2
-  curl -k --user admin:admin -H "Accept: application/json" -H "Content-Type:application/json" -X POST -d @Tetration_UDP_L4_ipfix.json https://$BIGIP_MGMT_IP/mgmt/tm/ltm/rule | python -m json.tool
+  curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X POST -d @Tetration_UDP_L4_ipfix.json https://$BIGIP_MGMT_IP/mgmt/tm/ltm/rule | python -m json.tool
 fi
-tcpresponse=$(curl --write-out %{http_code} --silent --output /dev/null -k --user admin:admin -H "Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/rule/Tetration_TCP_L4_ipfix)
+tcpresponse=$(curl --write-out %{http_code} --silent --output /dev/null -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/rule/Tetration_TCP_L4_ipfix)
 if [ "$tcpresponse" == 200 ]
   then
   #Update Irule Prime, make sure user has Prime irule locally by cloning
   echo "\033[1m TCP Irule exists on BIG-IP already \033[0m \c"
-  curl -k --user admin:admin -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH -d @Tetration_TCP_L4_ipfix.json https://$BIGIP_MGMT_IP/mgmt/tm/ltm/rule/Tetration_TCP_L4_ipfix | python -m json.tool
+  curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH -d @Tetration_TCP_L4_ipfix.json https://$BIGIP_MGMT_IP/mgmt/tm/ltm/rule/Tetration_TCP_L4_ipfix | python -m json.tool
 else
   sleep 2
-curl -k --user admin:admin -H "Accept: application/json" -H "Content-Type:application/json" -X POST -d @Tetration_TCP_L4_ipfix.json https://$BIGIP_MGMT_IP/mgmt/tm/ltm/rule | python -m json.tool
+curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X POST -d @Tetration_TCP_L4_ipfix.json https://$BIGIP_MGMT_IP/mgmt/tm/ltm/rule | python -m json.tool
 fi
 
 
 #Check if the IPFIX Pool exists on BIG-IP
 echo " \033[1mChecking if IPX Pool exists  on BIG-IP for Tetration Collector ....\033[0m "
 sleep 2
-curl -sku admin:admin -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool  | python -m json.tool >> pool.txt
+curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool  | python -m json.tool >> pool.txt
 awk -F'[, | ]' '{for(i=1;i<=NF;i++){gsub(/"|:/,"",$i);if($i=="name"){gsub(/"|:/,"",$(i+1));print $(i+1)}}}' pool.txt  >> allpool.txt # look for ipfix pools name in the only_name file
 #clean up blank spaces for the pool file
 sed 's/"//g' allpool.txt >> betterpool.txt
@@ -86,7 +86,7 @@ if [ "$temp" = "IPFIXPool" ]
       echo " \033[0;32mIPFIX Pool exists on your BIGIP :---> $temp \033[0m"
       sleep 2
       # Add new Sensors or pool members for IPFIX
-      curl -sku admin:admin -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members  | python -m json.tool >> members.txt
+      curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members  | python -m json.tool >> members.txt
       awk -F'[, | ]' '{for(i=1;i<=NF;i++){gsub(/"|:/,"",$i);if($i=="address"){gsub(/"|:/,"",$(i+1));print $(i+1)}}}' members.txt  >> allmembers.txt
       sed 's/"//g' allmembers.txt >> bettermembers.txt
       let i=0
@@ -113,13 +113,13 @@ if [ "$temp" = "IPFIXPool" ]
        					comp=${membersarray[i]}
        					if  [ "$comp" == "$exist_address" ]
        			 		then
-       			 		curl -sku admin:admin -H "Content-Type: application/json" -X DELETE https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/IPFIXPool/members/${membersarray[i]}:4739  | python -m json.tool
-                 		curl -sku admin:admin -H "Content-Type: application/json" -X POST https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members -d '{"name":"'${dest_address}':4739", "address":"'$dest_address'"}' | python -m json.tool  
+       			 		curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X DELETE https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/IPFIXPool/members/${membersarray[i]}:4739  | python -m json.tool
+                 		curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members -d '{"name":"'${dest_address}':4739", "address":"'$dest_address'"}' | python -m json.tool  
       			        fi
       			        let i++
       			        done
       			let i=0        
-      			curl -sku admin:admin -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members  | python -m json.tool >> members.txt
+      			curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members  | python -m json.tool >> members.txt
       			awk -F'[, | ]' '{for(i=1;i<=NF;i++){gsub(/"|:/,"",$i);if($i=="address"){gsub(/"|:/,"",$(i+1));print $(i+1)}}}' members.txt  >> allmembers.txt
       			sed 's/"//g' allmembers.txt >> bettermembers.txt
       			# Read file betterpool.txt line by line and put the details in array 
@@ -152,8 +152,8 @@ if [ "$temp" = "IPFIXPool" ]
           ### Create IPXPool required for the tetration collector, this is dedicated Pool
           echo "\033[1m Creating IPXPool on BIG-IP required for Tetration Collector .......\033[0m \c"
           sleep 2  
-          curl -sku admin:admin -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool -d '{"name": "IPFIXPool", "monitor": "gateway_icmp ", "members": [{"name":"'${FirstAddress}':4739", "address":"'$FirstAddress'"}]}' | python -m json.tool
-          curl -sku admin:admin -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool  | python -m json.tool >> pool.txt
+          curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool -d '{"name": "IPFIXPool", "monitor": "gateway_icmp ", "members": [{"name":"'${FirstAddress}':4739", "address":"'$FirstAddress'"}]}' | python -m json.tool
+          curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool  | python -m json.tool >> pool.txt
 		  awk -F'[, | ]' '{for(i=1;i<=NF;i++){gsub(/"|:/,"",$i);if($i=="name"){gsub(/"|:/,"",$(i+1));print $(i+1)}}}' pool.txt  >> allpool.txt # look for ipfix pools name in the only_name file
 		  #clean up blank spaces for the pool file
 		  sed 's/"//g' allpool.txt >> betterpool.txt
@@ -166,9 +166,9 @@ if [ "$temp" = "IPFIXPool" ]
           done < betterpool.txt
           let i=0
           temp=${poolarray[i]}
-          curl -s -sku admin:admin -H "Content-Type: application/json" -X POST https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members -d '{"name":"'${member_address1}':4739", "address":"'$member_address1'"}' > /dev/null  
-          curl -s -sku admin:admin -H "Content-Type: application/json" -X POST https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members -d '{"name":"'${member_address2}':4739", "address":"'$member_address2'"}' > /dev/null  
-          curl -sku admin:admin -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members  | python -m json.tool >> members.txt
+          curl -s -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members -d '{"name":"'${member_address1}':4739", "address":"'$member_address1'"}' > /dev/null  
+          curl -s -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members -d '{"name":"'${member_address2}':4739", "address":"'$member_address2'"}' > /dev/null  
+          curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members  | python -m json.tool >> members.txt
           awk -F'[, | ]' '{for(i=1;i<=NF;i++){gsub(/"|:/,"",$i);if($i=="address"){gsub(/"|:/,"",$(i+1));print $(i+1)}}}' members.txt  >> allmembers.txt
           sed 's/"//g' allmembers.txt >> bettermembers.txt
           let i=0
@@ -183,20 +183,20 @@ if [ "$temp" = "IPFIXPool" ]
           done
           rm *.txt 
           sleep 0.5
-          echo "curl -sku admin:admin -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool -d '{"name": "IPFIXPool", "monitor": "gateway_icmp ", "members": [{"name":"'${FirstAddress}':4739", "address":"'$FirstAddress'"}]}' | python -m json.tool"
+          echo "curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool -d '{"name": "IPFIXPool", "monitor": "gateway_icmp ", "members": [{"name":"'${FirstAddress}':4739", "address":"'$FirstAddress'"}]}' | python -m json.tool"
 
           ### Creating ... publisher
           echo "Creating .... IPFIX Publisher ......"
           sleep 2  
-          curl -sku admin:admin -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/sys/log-config/destination/ipfix -d '{"name":"IPFIXLog", "poolName":"IPFIXPool","protocolVersion": "ipfix"}' | python -m json.tool
+          curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/sys/log-config/destination/ipfix -d '{"name":"IPFIXLog", "poolName":"IPFIXPool","protocolVersion": "ipfix"}' | python -m json.tool
           sleep 0.5
-          curl -sku admin:admin -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/sys/log-config/publisher -d '{"name": "ipfix-pub-1", "destinations": [{"name": "IPFIXLog","partition": "Common"}]}' | python -m json.tool
+          curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/sys/log-config/publisher -d '{"name": "ipfix-pub-1", "destinations": [{"name": "IPFIXLog","partition": "Common"}]}' | python -m json.tool
           sleep 0.5
 fi
 
 #Go through all the virtual servers in BIG-IP
 
-        curl -k --user admin:admin -H "Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual  | python -m json.tool   >> top.txt
+        curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual  | python -m json.tool   >> top.txt
         sleep 0.5
 
         #Extract and Print all the virtual servers
@@ -238,16 +238,16 @@ if [ "$vs_input" = "y" ]
         while (( ${#protoarray[@]} > j )); do
              if [ "${protoarray[j]}" == "tcp" ]
              then
-             curl -k --user admin:admin -H " Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} | python -m json.tool 
+             curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H " Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} | python -m json.tool 
              echo "Attaching tcp irule .................."
              sleep 1
-             curl -k --user admin:admin -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} -d '{"rules":["/Common/Tetration_TCP_L4_ipfix"]}'  | python -m json.tool
+             curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} -d '{"rules":["/Common/Tetration_TCP_L4_ipfix"]}'  | python -m json.tool
              fi   
             if [ "${protoarray[j]}" == "udp" ]
             then
             echo " Attaching udp irule to virtual servers ......."
-            curl -k --user admin:admin -H " Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} | python -m json.tool 
-            curl -k --user admin:admin -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]}  -d '{"rules":["/Common/Tetration_UDP_L4_ipfix"]}'  | python -m json.tool
+            curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H " Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} | python -m json.tool 
+            curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]}  -d '{"rules":["/Common/Tetration_UDP_L4_ipfix"]}'  | python -m json.tool
              fi  
         let "j++"
        done
@@ -264,16 +264,16 @@ while (( ${#protoarray[@]} > j )); do
                                                       then 
                                                             if [ "${protoarray[j]}" == "tcp" ]
                                                             then
-                                                            curl -k --user admin:admin -H " Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} | python -m json.tool 
+                                                            curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H " Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} | python -m json.tool 
                                                             echo "Attaching tcp irule .................."
                                                             sleep 2
-                                                            curl -k --user admin:admin -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} -d '{"rules":["/Common/Tetration_TCP_L4_ipfix"]}'  | python -m json.tool
+                                                            curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} -d '{"rules":["/Common/Tetration_TCP_L4_ipfix"]}'  | python -m json.tool
                                                             fi
                                                             if [ "${protoarray[j]}" == "udp" ]
                                                             then
                                                             echo " Attaching udp irule to virtual servers ......."
-                                                            curl -k --user admin:admin -H " Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} | python -m json.tool 
-                                                            curl -k --user admin:admin -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]}  -d '{"rules":["/Common/Tetration_UDP_L4_ipfix"]}'  | python -m json.tool
+                                                            curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H " Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} | python -m json.tool 
+                                                            curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]}  -d '{"rules":["/Common/Tetration_UDP_L4_ipfix"]}'  | python -m json.tool
                                                             fi
                                                  
                                                       fi
