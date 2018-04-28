@@ -8,9 +8,9 @@ These are two irules [Tetration_TCP_L4_ipfix.tcl](https://github.com/f5devcentra
    iii. Repeat the same for the UDP iRule as well.
 
 2. Attach iRule to Virtual Server
-   i.   Click on LTM
-   ii.  Click on Virtual Servers
-   iii. Click on the Virtual Server to which iRule needs to be attached
-   iv.  Click on Resources under iRules click on Manage
-   v.   Select iRule from Available to Enabled in Resource Management
-   vi.  Click finished.
+   i.  Click on LTM
+   ii. Click on Virtual Servers
+   iii.Click on the Virtual Server to which iRule needs to be attached
+   iv. Click on Resources under iRules click on Manage
+   v.  Select iRule from Available to Enabled in Resource Management
+   vi. Click finished.
