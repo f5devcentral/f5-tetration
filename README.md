@@ -44,3 +44,47 @@ n
 Do you wish to attach iRule to the Virtual Server say y or n  t2 ...?
 y
 ```
+6. If you like to change the IPFIX Pool Member or Sensor address
+```
+sh install.sh
+rm: *.txt: No such file or directory
+ Attention --->  Please Enter Contrl C to Quit this Program ....
+
+ This script will automatically deploy the iRules required for Tetration  
+
+Please enter BIG-IP Management IP :  10.192.74.68
+Please enter BIG-IP ADMIN USER :  admin
+Please enter BIG-IP PASSWORD :  admin
+Irule Exists locally on your machine  .. hit enter...to proceed
+Checking if irule Exists on BIG-IP ......
+Checking if IPX Pool exists  on BIG-IP for Tetration Collector ....
+IPFIX Pool exists on your BIGIP :---> IPFIXPool
+You have following IPFIX  Members :-->  100.1.1.1
+You have following IPFIX  Members :-->  100.1.1.2
+You have following IPFIX  Members :-->  100.1.1.3
+Do you want to Replace Sensor or Pool Member .. ? Say y or n   
+Enter Pool Member or Sensor Address to Replace from above IPFIX Pool  100.1.1.1
+Enter Destination Pool Member or Sensor Address to Replace With  200.1.1.1
+No JSON object could be decoded
+You have following IPFIX  Members :-->  100.1.1.2
+You have following IPFIX  Members :-->  100.1.1.3
+You have following IPFIX  Members :-->  200.1.1.1
+```
+7. To Remove the configuration and clean everything
+```
+sh clean.sh
+ Please Enter contrl C to Quit
+
+ This script will automatically delete and clean up iRule & IPFIX configuration
+
+ This Script is Used to  *** Remove  configuration from BIG-IP  ***  
+
+Please enter BIG-IP Management IP to Clean IPFIX configuration :  10.192.74.68
+Please enter BIG-IP ADMIN USER :  admin
+Please enter BIG-IP PASSWORD :  xxxx
+Remove irules from the BIG-IP
+This Script is Used to  *** Remove  configuration from BIG-IP  ***  
+
+Please enter BIG-IP Management IP to Clean IPFIX configuration :  
+
+```
