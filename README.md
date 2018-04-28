@@ -15,5 +15,27 @@ Repo has two directories [irules](https://github.com/f5devcentral/f5-tetration/t
 
  This script will automatically deploy the iRules required for Tetration  
 
-Please enter BIG-IP Management IP :  
+Please enter BIG-IP Management IP :  X.X.X.X
+Please enter BIG-IP ADMIN USER :  admin
+Please enter BIG-IP PASSWORD :  xxxx
+Irule Exists locally on your machine  .. hit enter...to proceed
+Checking if irule Exists on BIG-IP ......
+Checking if IPX Pool exists  on BIG-IP for Tetration Collector ....
+IPFIX Pool is not configured on your BIG-IP  .....
+Enter Pool Member or Sensor Address 100.1.1.1
+Enter Pool Member or Sensor Address  100.1.1.2
+ Enter Pool Member or Sensor Address  100.1.1.3
+ Creating IPXPool on BIG-IP required for Tetration Collector ....... {
+    "allowNat": "yes",
 ```
+4. Attach irule to All Virtual Servers
+```
+100  4257  100  4257    0     0  17622      0 --:--:-- --:--:-- --:--:-- 17737
+You have following Virtual Server  t1 t2 t3 t5_dup
+Do you wish to apply ipfix irule to all  Virtual Server  say y or n...?
+y
+Attaching irule to all Virtual Servers .....
+```
+5. IF you want to Select only specific Virtual Server then say 'n' on 4th step & proceed as follows
+```
+``` 
