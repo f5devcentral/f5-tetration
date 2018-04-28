@@ -10,10 +10,10 @@ Repo has two directories [irules](https://github.com/f5devcentral/f5-tetration/t
 2. Change directory to scripts
 `cd f5-tetration/scripts/`
 3. Run install script
-` sh install.sh
+``` sh install.sh
  Attention --->  Please Enter Contrl C to Quit this Program ....
 
  This script will automatically deploy the iRules required for Tetration  
 
 Please enter BIG-IP Management IP :  
-`
+```
