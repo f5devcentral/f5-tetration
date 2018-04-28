@@ -10,12 +10,14 @@ Repo has two directories [irules](https://github.com/f5devcentral/f5-tetration/t
 2. Change directory to scripts
 `cd f5-tetration/scripts/`
 3. Run install script
-``` sh install.sh
- Attention --->  Please Enter Contrl C to Quit this Program ....
+```
+sh install.sh
 
- This script will automatically deploy the iRules required for Tetration  
+Attention --->  Please Enter Contrl C to Quit this Program ....
 
-Please enter BIG-IP Management IP :  X.X.X.X
+This script will automatically deploy the iRules required for Tetration  
+
+Please enter BIG-IP Management IP :  x.x.x.x
 Please enter BIG-IP ADMIN USER :  admin
 Please enter BIG-IP PASSWORD :  xxxx
 Irule Exists locally on your machine  .. hit enter...to proceed
@@ -47,10 +49,10 @@ y
 6. If you like to change the IPFIX Pool Member or Sensor address
 ```
 sh install.sh
-rm: *.txt: No such file or directory
- Attention --->  Please Enter Contrl C to Quit this Program ....
 
- This script will automatically deploy the iRules required for Tetration  
+Attention --->  Please Enter Contrl C to Quit this Program ....
+
+This script will automatically deploy the iRules required for Tetration  
 
 Please enter BIG-IP Management IP :  10.192.74.68
 Please enter BIG-IP ADMIN USER :  admin
@@ -73,11 +75,11 @@ You have following IPFIX  Members :-->  200.1.1.1
 7. To Remove the configuration and clean everything
 ```
 sh clean.sh
- Please Enter contrl C to Quit
+Please Enter contrl C to Quit
 
- This script will automatically delete and clean up iRule & IPFIX configuration
+This script will automatically delete and clean up iRule & IPFIX configuration
 
- This Script is Used to  *** Remove  configuration from BIG-IP  ***  
+This Script is Used to  *** Remove  configuration from BIG-IP  ***  
 
 Please enter BIG-IP Management IP to Clean IPFIX configuration :  10.192.74.68
 Please enter BIG-IP ADMIN USER :  admin
