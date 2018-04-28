@@ -1,0 +1,178 @@
+{
+    "items": [
+        {
+            "addressStatus": "yes",
+            "autoLasthop": "default",
+            "cmpEnabled": "yes",
+            "connectionLimit": 0,
+            "destination": "/Common/3.3.3.3:80",
+            "enabled": true,
+            "fullPath": "/Common/t1",
+            "generation": 798,
+            "gtmScore": 0,
+            "ipProtocol": "tcp",
+            "kind": "tm:ltm:virtual:virtualstate",
+            "mask": "255.255.255.255",
+            "mirror": "disabled",
+            "mobileAppTunnel": "disabled",
+            "name": "t1",
+            "nat64": "disabled",
+            "partition": "Common",
+            "policiesReference": {
+                "isSubcollection": true,
+                "link": "https://localhost/mgmt/tm/ltm/virtual/~Common~t1/policies?ver=12.0.0"
+            },
+            "profilesReference": {
+                "isSubcollection": true,
+                "link": "https://localhost/mgmt/tm/ltm/virtual/~Common~t1/profiles?ver=12.0.0"
+            },
+            "rateLimit": "disabled",
+            "rateLimitDstMask": 0,
+            "rateLimitMode": "object",
+            "rateLimitSrcMask": 0,
+            "selfLink": "https://localhost/mgmt/tm/ltm/virtual/~Common~t1?ver=12.0.0",
+            "serviceDownImmediateAction": "none",
+            "source": "0.0.0.0/0",
+            "sourceAddressTranslation": {
+                "type": "none"
+            },
+            "sourcePort": "preserve",
+            "synCookieStatus": "not-activated",
+            "translateAddress": "enabled",
+            "translatePort": "enabled",
+            "vlansDisabled": true,
+            "vsIndex": 21
+        },
+        {
+            "addressStatus": "yes",
+            "autoLasthop": "default",
+            "cmpEnabled": "yes",
+            "connectionLimit": 0,
+            "destination": "/Common/4.4.4.4:80",
+            "enabled": true,
+            "fullPath": "/Common/t2",
+            "generation": 799,
+            "gtmScore": 0,
+            "ipProtocol": "tcp",
+            "kind": "tm:ltm:virtual:virtualstate",
+            "mask": "255.255.255.255",
+            "mirror": "disabled",
+            "mobileAppTunnel": "disabled",
+            "name": "t2",
+            "nat64": "disabled",
+            "partition": "Common",
+            "policiesReference": {
+                "isSubcollection": true,
+                "link": "https://localhost/mgmt/tm/ltm/virtual/~Common~t2/policies?ver=12.0.0"
+            },
+            "profilesReference": {
+                "isSubcollection": true,
+                "link": "https://localhost/mgmt/tm/ltm/virtual/~Common~t2/profiles?ver=12.0.0"
+            },
+            "rateLimit": "disabled",
+            "rateLimitDstMask": 0,
+            "rateLimitMode": "object",
+            "rateLimitSrcMask": 0,
+            "selfLink": "https://localhost/mgmt/tm/ltm/virtual/~Common~t2?ver=12.0.0",
+            "serviceDownImmediateAction": "none",
+            "source": "0.0.0.0/0",
+            "sourceAddressTranslation": {
+                "type": "none"
+            },
+            "sourcePort": "preserve",
+            "synCookieStatus": "not-activated",
+            "translateAddress": "enabled",
+            "translatePort": "enabled",
+            "vlansDisabled": true,
+            "vsIndex": 22
+        },
+        {
+            "addressStatus": "yes",
+            "autoLasthop": "default",
+            "cmpEnabled": "yes",
+            "connectionLimit": 0,
+            "destination": "/Common/5.5.5.5:80",
+            "enabled": true,
+            "fullPath": "/Common/t3",
+            "generation": 800,
+            "gtmScore": 0,
+            "ipProtocol": "tcp",
+            "kind": "tm:ltm:virtual:virtualstate",
+            "mask": "255.255.255.255",
+            "mirror": "disabled",
+            "mobileAppTunnel": "disabled",
+            "name": "t3",
+            "nat64": "disabled",
+            "partition": "Common",
+            "policiesReference": {
+                "isSubcollection": true,
+                "link": "https://localhost/mgmt/tm/ltm/virtual/~Common~t3/policies?ver=12.0.0"
+            },
+            "profilesReference": {
+                "isSubcollection": true,
+                "link": "https://localhost/mgmt/tm/ltm/virtual/~Common~t3/profiles?ver=12.0.0"
+            },
+            "rateLimit": "disabled",
+            "rateLimitDstMask": 0,
+            "rateLimitMode": "object",
+            "rateLimitSrcMask": 0,
+            "selfLink": "https://localhost/mgmt/tm/ltm/virtual/~Common~t3?ver=12.0.0",
+            "serviceDownImmediateAction": "none",
+            "source": "0.0.0.0/0",
+            "sourceAddressTranslation": {
+                "type": "none"
+            },
+            "sourcePort": "preserve",
+            "synCookieStatus": "not-activated",
+            "translateAddress": "enabled",
+            "translatePort": "enabled",
+            "vlansDisabled": true,
+            "vsIndex": 23
+        },
+        {
+            "addressStatus": "yes",
+            "autoLasthop": "default",
+            "cmpEnabled": "yes",
+            "connectionLimit": 0,
+            "destination": "/Common/9.9.9.9:555",
+            "enabled": true,
+            "fullPath": "/Common/t5_dup",
+            "generation": 801,
+            "gtmScore": 0,
+            "ipProtocol": "udp",
+            "kind": "tm:ltm:virtual:virtualstate",
+            "mask": "255.255.255.255",
+            "mirror": "disabled",
+            "mobileAppTunnel": "disabled",
+            "name": "t5_dup",
+            "nat64": "disabled",
+            "partition": "Common",
+            "policiesReference": {
+                "isSubcollection": true,
+                "link": "https://localhost/mgmt/tm/ltm/virtual/~Common~t5_dup/policies?ver=12.0.0"
+            },
+            "profilesReference": {
+                "isSubcollection": true,
+                "link": "https://localhost/mgmt/tm/ltm/virtual/~Common~t5_dup/profiles?ver=12.0.0"
+            },
+            "rateLimit": "disabled",
+            "rateLimitDstMask": 0,
+            "rateLimitMode": "object",
+            "rateLimitSrcMask": 0,
+            "selfLink": "https://localhost/mgmt/tm/ltm/virtual/~Common~t5_dup?ver=12.0.0",
+            "serviceDownImmediateAction": "none",
+            "source": "0.0.0.0/0",
+            "sourceAddressTranslation": {
+                "type": "none"
+            },
+            "sourcePort": "preserve",
+            "synCookieStatus": "not-activated",
+            "translateAddress": "enabled",
+            "translatePort": "enabled",
+            "vlansDisabled": true,
+            "vsIndex": 24
+        }
+    ],
+    "kind": "tm:ltm:virtual:virtualcollectionstate",
+    "selfLink": "https://localhost/mgmt/tm/ltm/virtual?ver=12.0.0"
+}

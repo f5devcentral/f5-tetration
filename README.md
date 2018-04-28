@@ -24,18 +24,23 @@ Checking if IPX Pool exists  on BIG-IP for Tetration Collector ....
 IPFIX Pool is not configured on your BIG-IP  .....
 Enter Pool Member or Sensor Address 100.1.1.1
 Enter Pool Member or Sensor Address  100.1.1.2
- Enter Pool Member or Sensor Address  100.1.1.3
- Creating IPXPool on BIG-IP required for Tetration Collector ....... {
+Enter Pool Member or Sensor Address  100.1.1.3
+Creating IPXPool on BIG-IP required for Tetration Collector ....... {
     "allowNat": "yes",
 ```
 4. Attach irule to All Virtual Servers
 ```
-100  4257  100  4257    0     0  17622      0 --:--:-- --:--:-- --:--:-- 17737
 You have following Virtual Server  t1 t2 t3 t5_dup
 Do you wish to apply ipfix irule to all  Virtual Server  say y or n...?
 y
 Attaching irule to all Virtual Servers .....
 ```
 5. IF you want to Select only specific Virtual Server then say 'n' on 4th step & proceed as follows
+```You have following Virtual Server  t1 t2 t3 t5_dup
+Do you wish to apply ipfix irule to all  Virtual Server  say y or n...?
+n
+Do you wish to attach iRule to the Virtual Server say y or n  t1 ...?
+n
+Do you wish to attach iRule to the Virtual Server say y or n  t2 ...?
+y
 ```
-``` 
