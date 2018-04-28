@@ -2,7 +2,7 @@
 declare -a viparray
 declare -a poolarray
 declare -a membersarray
-rm *.txt
+rm *.txt > /dev/null
 echo "\033[0;31m Attention --->  Please Enter Contrl C to Quit this Program ....\033[0m \n"
 echo "\033[0;32m This script will automatically deploy the iRules required for Tetration \033[0m \n"
 while :
