@@ -8,7 +8,7 @@ echo "\033[0;32m This script will automatically deploy the iRules required for T
 while :
 do
 echo "\033[1mPlease enter BIG-IP Management IP : \033[0m \c"
-read   BIGIP_MGMT_IP
+read BIGIP_MGMT_IP
 echo "\033[1mPlease enter BIG-IP ADMIN USER : \033[0m \c"
 read BIGIP_ADMIN
 echo "\033[1mPlease enter BIG-IP PASSWORD : \033[0m \c"
@@ -65,7 +65,9 @@ fi
 
 
 #Check if the IPFIX Pool exists on BIG-IP
-echo " \033[1mChecking if IPX Pool exists  on BIG-IP for Tetration Collector ....\033[0m "
+# vng
+echo "\033[1m Cisco Tetration requires 3 F5 IPFIX sensor per BIG-IP \033[0m "
+echo "\033[1m Checking if IPX Pool exists  on BIG-IP for Tetration Collector ....\033[0m "
 sleep 2
 curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool  | python -m json.tool >> pool.txt
 awk -F'[, | ]' '{for(i=1;i<=NF;i++){gsub(/"|:/,"",$i);if($i=="name"){gsub(/"|:/,"",$(i+1));print $(i+1)}}}' pool.txt  >> allpool.txt # look for ipfix pools name in the only_name file
@@ -81,7 +83,7 @@ done < betterpool.txt
     let i=0
     temp=${poolarray[i++]}
 
-if [ "$temp" = "IPFIXPool" ]
+if [ "$temp" = "TetrationIPFIXPool" ]
       then
       echo " \033[0;32mIPFIX Pool exists on your BIGIP :---> $temp \033[0m"
       sleep 2
@@ -113,7 +115,7 @@ if [ "$temp" = "IPFIXPool" ]
        					comp=${membersarray[i]}
        					if  [ "$comp" == "$exist_address" ]
        			 		then
-       			 		curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X DELETE https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/IPFIXPool/members/${membersarray[i]}:4739  | python -m json.tool
+       			 		curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X DELETE https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/TetrationIPFIXPool/members/${membersarray[i]}:4739  | python -m json.tool
                  		curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members -d '{"name":"'${dest_address}':4739", "address":"'$dest_address'"}' | python -m json.tool  
       			        fi
       			        let i++
@@ -140,19 +142,19 @@ if [ "$temp" = "IPFIXPool" ]
 
 
   else
-  	      echo "\033[1m IPFIX Pool is not configured on your BIG-IP \033[0m ..... "
+          echo "\033[1m IPFIX Pool is not configured on your BIG-IP \033[0m ..... "
   	      sleep 1
-  	      echo "\033[1m Enter Pool Member or Sensor Address  \033[0m \c"
+  	      echo "\033[1m Enter 1st F5 IPFIX Sensor Address \033[0m \c "
   	      read FirstAddress
-  	      echo "\033[1m Enter Pool Member or Sensor Address \033[0m \c "
+  	      echo "\033[1m Enter 2nd F5 IPFIX Sensor Address \033[0m \c "
   	      read member_address1
-  	      echo "\033[1m Enter Pool Member or Sensor Address \033[0m \c "
+  	      echo "\033[1m Enter 3rd F5 IPFIX Sensor Address \033[0m \c "
   	      read member_address2
           sleep 2
           ### Create IPXPool required for the tetration collector, this is dedicated Pool
           echo "\033[1m Creating IPXPool on BIG-IP required for Tetration Collector .......\033[0m \c"
           sleep 2  
-          curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool -d '{"name": "IPFIXPool", "monitor": "gateway_icmp ", "members": [{"name":"'${FirstAddress}':4739", "address":"'$FirstAddress'"}]}' | python -m json.tool
+          curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool -d '{"name": "TetrationIPFIXPool", "monitor": "gateway_icmp ", "members": [{"name":"'${FirstAddress}':4739", "address":"'$FirstAddress'"}]}' | python -m json.tool
           curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool  | python -m json.tool >> pool.txt
 		  awk -F'[, | ]' '{for(i=1;i<=NF;i++){gsub(/"|:/,"",$i);if($i=="name"){gsub(/"|:/,"",$(i+1));print $(i+1)}}}' pool.txt  >> allpool.txt # look for ipfix pools name in the only_name file
 		  #clean up blank spaces for the pool file
@@ -183,14 +185,14 @@ if [ "$temp" = "IPFIXPool" ]
           done
           rm *.txt 
           sleep 0.5
-          echo "curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool -d '{"name": "IPFIXPool", "monitor": "gateway_icmp ", "members": [{"name":"'${FirstAddress}':4739", "address":"'$FirstAddress'"}]}' | python -m json.tool"
+          echo "curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool -d '{"name": "TetrationIPFIXPool", "monitor": "gateway_icmp ", "members": [{"name":"'${FirstAddress}':4739", "address":"'$FirstAddress'"}]}' | python -m json.tool"
 
           ### Creating ... publisher
           echo "Creating .... IPFIX Publisher ......"
           sleep 2  
-          curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/sys/log-config/destination/ipfix -d '{"name":"IPFIXLog", "poolName":"IPFIXPool","protocolVersion": "ipfix"}' | python -m json.tool
+          curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/sys/log-config/destination/ipfix -d '{"name":"TetrationIPFIXLog", "poolName":"TetrationIPFIXPool","protocolVersion": "ipfix"}' | python -m json.tool
           sleep 0.5
-          curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/sys/log-config/publisher -d '{"name": "ipfix-pub-1", "destinations": [{"name": "IPFIXLog","partition": "Common"}]}' | python -m json.tool
+          curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/sys/log-config/publisher -d '{"name": "ipfix-pub-1", "destinations": [{"name": "TetrationIPFIXLog","partition": "Common"}]}' | python -m json.tool
           sleep 0.5
 fi
 

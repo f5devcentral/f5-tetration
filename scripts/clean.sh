@@ -14,10 +14,10 @@ read BIGIP_PASS
 
 curl -s -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X DELETE https://$BIGIP_MGMT_IP/mgmt/tm/sys/log-config/publisher/ipfix-pub-1  > /dev/null
 echo " Removed ipfix-pub-1 log-config"
-curl -s -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X DELETE https://$BIGIP_MGMT_IP/mgmt/tm/sys/log-config/destination/ipfix/IPFIXLog > /dev/null
-echo " Removing IPFIXLog  "
-curl -s -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X DELETE  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/IPFIXPool > /dev/null
-echo " Removing IPFIXPool "
+curl -s -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X DELETE https://$BIGIP_MGMT_IP/mgmt/tm/sys/log-config/destination/ipfix/TetrationIPFIXLog > /dev/null
+echo " Removing TetrationIPFIXLog  "
+curl -s -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X DELETE  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/TetrationIPFIXPool > /dev/null
+echo " Removing TetrationIPFIXPool "
 
  
 
