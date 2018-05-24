@@ -36,8 +36,11 @@ curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Conten
         let i=0
         # Read file better.txt line by line and put the details in array 
         while IFS=$'\n' read -r line_data; do
+          if [ "${line_data}" != "cookie" ] # Dont include name cookie which we get when we do GET on VIP cookie is name of persistence.
+            then
           viparray[i]="${line_data}"
           ((++i))
+        fi
         done < better.txt
       let j=0
       while IFS=$'\n' read -r line_data; do
@@ -51,7 +54,9 @@ curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Conten
                  	rm file.txt
 					curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} | python -m json.tool >> file.txt
 					value=$( grep -ic "Tetration" file.txt )
-					if [ $value -eq 2 ]
+          echo "value is ${viparray[*]}"
+          echo "value is $value"
+					if [ $value != 2 ]
 					then
  
 					echo " Removing irule from Virtual Server "

@@ -163,13 +163,16 @@ if [ "$temp" = "TetrationIPFIXPool" ]
 		  let i=0
 		  # Read file betterpool.txt line by line and put the details in array 
 		  while IFS=$'\n' read -r line_data; do
+          if [ "${line_data}" = "TetrationIPFIXPool" ]
+            then 
     	  poolarray[i]="${line_data}"
           ((++i))
+        fi
           done < betterpool.txt
           let i=0
           temp=${poolarray[i]}
-          curl -s -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members -d '{"name":"'${member_address1}':4739", "address":"'$member_address1'"}' > /dev/null  
-          curl -s -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members -d '{"name":"'${member_address2}':4739", "address":"'$member_address2'"}' > /dev/null  
+          curl -s -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members -d '{"name":"'${member_address1}':4739", "address":"'$member_address1'"}'  | python -m json.tool 
+          curl -s -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members -d '{"name":"'${member_address2}':4739", "address":"'$member_address2'"}'  | python -m json.tool
           curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool/~Common~$temp/members  | python -m json.tool >> members.txt
           awk -F'[, | ]' '{for(i=1;i<=NF;i++){gsub(/"|:/,"",$i);if($i=="address"){gsub(/"|:/,"",$(i+1));print $(i+1)}}}' members.txt  >> allmembers.txt
           sed 's/"//g' allmembers.txt >> bettermembers.txt
@@ -211,8 +214,11 @@ fi
         let i=0
         # Read file better.txt line by line and put the details in array 
         while IFS=$'\n' read -r line_data; do
+          if [ "${line_data}" != "cookie" ]
+            then 
           viparray[i]="${line_data}"
           ((++i))
+        fi
         done < better.txt
         let j=0
         while IFS=$'\n' read -r line_data; do
