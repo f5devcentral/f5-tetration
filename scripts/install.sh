@@ -2,13 +2,27 @@
 declare -a viparray
 declare -a poolarray
 declare -a membersarray
-rm *.txt > /dev/null
+rm *.txt 
+ is_valid() {
+    IP_ADDRESS="$1"
+    # Check if the format looks right_
+    echo "$IP_ADDRESS" | egrep -qE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' || return 1
+    #check that each octect is less than or equal to 255:
+    echo $IP_ADDRESS | awk -F'.' '$1 <=255 && $2 <= 255 && $3 <=255 && $4 <= 255 {print "Y" } ' | grep -q Y || return 1
+    return 0
+}
+
 echo "\033[0;31m Attention --->  Please Enter Contrl C to Quit this Program ....\033[0m \n"
 echo "\033[0;32m This script will automatically deploy the iRules required for Tetration \033[0m \n"
 while :
 do
 echo "\033[1mPlease enter BIG-IP Management IP : \033[0m \c"
 read BIGIP_MGMT_IP
+while ! is_valid "$BIGIP_MGMT_IP"
+do
+    read -p "Not an IP. Re-enter: " BIGIP_MGMT_IP
+done
+
 echo "\033[1mPlease enter BIG-IP ADMIN USER : \033[0m \c"
 read BIGIP_ADMIN
 echo "\033[1mPlease enter BIG-IP PASSWORD : \033[0m \c"
@@ -69,6 +83,7 @@ fi
 echo "\033[1m Cisco Tetration requires 3 F5 IPFIX sensor per BIG-IP \033[0m "
 echo "\033[1m Checking if IPX Pool exists  on BIG-IP for Tetration Collector ....\033[0m "
 sleep 2
+
 curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/pool  | python -m json.tool >> pool.txt
 awk -F'[, | ]' '{for(i=1;i<=NF;i++){gsub(/"|:/,"",$i);if($i=="name"){gsub(/"|:/,"",$(i+1));print $(i+1)}}}' pool.txt  >> allpool.txt # look for ipfix pools name in the only_name file
 #clean up blank spaces for the pool file
@@ -197,6 +212,7 @@ if [ "$temp" = "TetrationIPFIXPool" ]
           sleep 0.5
           curl -sku $BIGIP_ADMIN:$BIGIP_PASS -H "Content-Type: application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/sys/log-config/publisher -d '{"name": "ipfix-pub-1", "destinations": [{"name": "TetrationIPFIXLog","partition": "Common"}]}' | python -m json.tool
           sleep 0.5
+
 fi
 
 #Go through all the virtual servers in BIG-IP
@@ -259,6 +275,7 @@ if [ "$vs_input" = "y" ]
              fi  
         let "j++"
        done
+       rm *.txt
        exit 
     
 fi
@@ -288,6 +305,7 @@ while (( ${#protoarray[@]} > j )); do
                                                       let j++
 
                                             done
+                                            rm *.txt
                                             exit
                                           
 rm *.txt
