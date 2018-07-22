@@ -56,7 +56,7 @@ curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Conten
 					value=$( grep -ic "Tetration" file.txt )
           echo "value is ${viparray[*]}"
           echo "value is $value"
-					if [ $value != 2 ]
+					if [ $value != 100 ]
 					then
  
 					echo " Removing irule from Virtual Server "

@@ -37,8 +37,8 @@ then
 	sleep 2
 else
 	echo "\033[1mIrule missing ... locally will fetch from Github ...\033[0m \c"
-	curl https://raw.githubusercontent.com/f5devcentral/f5-tetration/master/irules/Tetration_TCP_L4_ipfix.json -o Tetration_TCP_L4_ipfix
-	curl https://raw.githubusercontent.com/f5devcentral/f5-tetration/master/irules/Tetration_UDP_L4_ipfix.json -o Tetration_UDP_L4_ipfix
+	curl https://raw.githubusercontent.com/f5devcentral/f5-tetration/master/scripts/Tetration_TCP_L4_ipfix.json -o Tetration_TCP_L4_ipfix.json
+	curl https://raw.githubusercontent.com/f5devcentral/f5-tetration/master/scripts/Tetration_UDP_L4_ipfix.json -o Tetration_UDP_L4_ipfix.json
 	
      if [  \( -e Tetration_TCP_L4_ipfix.json \) -o \( -e Tetration_UDP_L4_ipfix.json \) ]
      	then
@@ -250,6 +250,7 @@ while :
 do
 	printf "\033[0;32mYou have following Virtual Server  ${viparray[*]}\033[0m \n"
 echo "Do you wish to apply ipfix irule to all  Virtual Server  say y or n...? "
+echo " ##### Attention THIS WILL REMOVE OTHER EXISTING IRULE ON YOUR VIRTUAL SERVER  "
 read vs_input
 if [ "$vs_input" = "y" ]
         then 
@@ -265,7 +266,7 @@ if [ "$vs_input" = "y" ]
              curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H " Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} | python -m json.tool 
              echo "Attaching tcp irule .................."
              sleep 1
-             curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} -d '{"rules":["/Common/Tetration_TCP_L4_ipfix"]}'  | python -m json.tool
+             curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} -d '{"rules":["/Common/Tetration_TCP_L4_ipfix"]}'  | python -m json.tool
              fi   
             if [ "${protoarray[j]}" == "udp" ]
             then
