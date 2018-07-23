@@ -266,7 +266,7 @@ if [ "$vs_input" = "y" ]
              curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H " Accept: application/json" -H "Content-Type:application/json" -X GET  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} | python -m json.tool 
              echo "Attaching tcp irule .................."
              sleep 1
-             curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X POST  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} -d '{"rules":["/Common/Tetration_TCP_L4_ipfix"]}'  | python -m json.tool
+             curl -k --user $BIGIP_ADMIN:$BIGIP_PASS -H "Accept: application/json" -H "Content-Type:application/json" -X PATCH  https://$BIGIP_MGMT_IP/mgmt/tm/ltm/virtual/${viparray[j]} -d '{"rules":["/Common/Tetration_TCP_L4_ipfix"]}'  | python -m json.tool
              fi   
             if [ "${protoarray[j]}" == "udp" ]
             then
