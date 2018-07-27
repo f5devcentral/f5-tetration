@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 declare -a viparray
 declare -a poolarray
 declare -a membersarray

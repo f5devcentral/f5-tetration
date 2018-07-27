@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo " Please Enter contrl C to Quit \n"
 echo " This script will automatically delete and clean up iRule & IPFIX configuration \n"
