@@ -4,7 +4,10 @@ This repo provides information on how to configure BIG-IP devices in Cisco Tetra
 ### Repo Details
 Repo has two directories [irules](https://github.com/f5devcentral/f5-tetration/tree/master/irules/) and [scripts](https://github.com/f5devcentral/f5-tetration/tree/master/scripts). irules directory has  F5 BIG-IP irules for IPFIX. The irules facilitate sending the flow information to the Tetration Sensors. The scripts directory has the irule JSON payload and install and clean scripts. More information on IPFIX and F5 please refer to [IPFIX F5](https://support.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/bigip-external-monitoring-implementations-12-0-0/13.html)
 
-### Disclaimer : Script removes existing irules on Virtual Server. Also Script is tested with MAC OS terminal only
+### Disclaimer : 
+1. Integration is tested with v12.0 and above
+2. Script removes existing irules on Virtual Server.
+3. Script is tested with MAC OS terminal only
 
 ### How to use this Repo  
 
