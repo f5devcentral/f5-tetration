@@ -7,7 +7,7 @@ Repo has two directories [irules](https://github.com/f5devcentral/f5-tetration/t
 ### Disclaimer : 
 1. Integration is tested with v12.0 and above
 2. Script removes existing irules on Virtual Server.
-3. Script is tested with MAC OS terminal only
+3. Script is tested with MAC OS terminal only. For ubuntu use ./install.sh after changing chmode 777
 
 ### How to use this Repo  
 
