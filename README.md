@@ -9,7 +9,14 @@ Repo has two directories [irules](https://github.com/f5devcentral/f5-tetration/t
 2. Script removes existing irules on Virtual Server.
 3. Script is tested with MAC OS terminal only. For ubuntu use ./install.sh after changing chmode 777
 
+
 ### How to use this Repo  
+
+If you are using MAC OS just download the executable script https://github.com/f5devcentral/f5-tetration/raw/master/f5tetv1
+and to run the script just issue ./f5tetv1  from MAC OS terminal
+
+OR
+
 
 1. Clone the repo to your local machine
 ` git clone https://github.com/f5devcentral/f5-tetration.git`
