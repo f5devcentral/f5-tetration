@@ -15,9 +15,7 @@ Repo has two directories [irules](https://github.com/f5devcentral/f5-tetration/t
 If you are using MAC OS just download the executable script https://github.com/f5devcentral/f5-tetration/raw/master/f5tetv1
 and to run the script just issue ./f5tetv1  from MAC OS terminal
 
-OR
-
-
+```
 Enter your BIG-IP Management IP: x.x.x.x
 Enter your Username: admin
 Enter your Password: xxxx
