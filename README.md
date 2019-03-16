@@ -6,7 +6,7 @@ Repo has two directories [irules](https://github.com/f5devcentral/f5-tetration/t
 
 ### Disclaimer : 
 1. Integration is tested with v12.0 and above
-2. Script is tested with MAC OS terminal only. For ubuntu use ./install.sh after changing chmode 777
+2. Script is tested with MAC OS terminal only. To run use ./f5tetv1 from MAc OS terminal
 
 
 ### How to use this Repo  
