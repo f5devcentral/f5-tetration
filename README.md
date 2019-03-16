@@ -18,88 +18,69 @@ and to run the script just issue ./f5tetv1  from MAC OS terminal
 OR
 
 
-1. Clone the repo to your local machine
-` git clone https://github.com/f5devcentral/f5-tetration.git`
-2. Change directory to scripts
-`cd f5-tetration/scripts/`
-3. Run install script
-```
-sh install.sh
+Enter your BIG-IP Management IP: x.x.x.x
+Enter your Username: admin
+Enter your Password: xxxx
+Attempting to Connect...
 
-Attention --->  Please Enter Contrl C to Quit this Program ....
+Please make your selection 1: IPFIX Configuration
+                           2: Remove IPFIX Configuration
+                           3: Remove IPFIX iRules from Virtual Server
+                           4: Remove iRules from BIG-IP
+                           5: Exit
 
-This script will automatically deploy the iRules required for Tetration  
+Enter Your Choice : 1
+Checking TCP iRules  exists on your local machine
 
-Please enter BIG-IP Management IP :  x.x.x.x
-Please enter BIG-IP ADMIN USER :  admin
-Please enter BIG-IP PASSWORD :  xxxx
-Irule Exists locally on your machine  .. hit enter...to proceed
-Checking if irule Exists on BIG-IP ......
-Checking if IPX Pool exists  on BIG-IP for Tetration Collector ....
-IPFIX Pool is not configured on your BIG-IP  .....
-Enter Pool Member or Sensor Address 100.1.1.1
-Enter Pool Member or Sensor Address  100.1.1.2
-Enter Pool Member or Sensor Address  100.1.1.3
-Creating IPXPool on BIG-IP required for Tetration Collector ....... {
-    "allowNat": "yes",
-```
-4. Attach irule to All Virtual Servers
-```
-You have following Virtual Server  t1 t2 t3 t5_dup
-Do you wish to apply ipfix irule to all  Virtual Server  say y or n...?
-y
-Attaching irule to all Virtual Servers .....
-```
-5. IF you want to Select only specific Virtual Server then say 'n' on 4th step & proceed as follows
-```You have following Virtual Server  t1 t2 t3 t5_dup
-Do you wish to apply ipfix irule to all  Virtual Server  say y or n...?
-n
-Do you wish to attach iRule to the Virtual Server say y or n  t1 ...?
-n
-Do you wish to attach iRule to the Virtual Server say y or n  t2 ...?
-y
-```
-6. If you like to change the IPFIX Pool Member or Sensor address
-```
-sh install.sh
+TCP iRules  exists on your local machine
 
-Attention --->  Please Enter Contrl C to Quit this Program ....
+Checking UDP iRules exists on your local machine
 
-This script will automatically deploy the iRules required for Tetration  
+UDP iRules exists on your local machine
 
-Please enter BIG-IP Management IP :  10.192.74.68
-Please enter BIG-IP ADMIN USER :  admin
-Please enter BIG-IP PASSWORD :  admin
-Irule Exists locally on your machine  .. hit enter...to proceed
-Checking if irule Exists on BIG-IP ......
-Checking if IPX Pool exists  on BIG-IP for Tetration Collector ....
-IPFIX Pool exists on your BIGIP :---> IPFIXPool
-You have following IPFIX  Members :-->  100.1.1.1
-You have following IPFIX  Members :-->  100.1.1.2
-You have following IPFIX  Members :-->  100.1.1.3
-Do you want to Replace Sensor or Pool Member .. ? Say y or n   
-Enter Pool Member or Sensor Address to Replace from above IPFIX Pool  100.1.1.1
-Enter Destination Pool Member or Sensor Address to Replace With  200.1.1.1
-No JSON object could be decoded
-You have following IPFIX  Members :-->  100.1.1.2
-You have following IPFIX  Members :-->  100.1.1.3
-You have following IPFIX  Members :-->  200.1.1.1
-```
-7. To Remove the configuration and clean everything
-```
-sh clean.sh
-Please Enter contrl C to Quit
+Checking TCP iRules exists on BIG-IP ......
 
-This script will automatically delete and clean up iRule & IPFIX configuration
+Uploading TCP iRules to BIG-IP .........
 
-This Script is Used to  *** Remove  configuration from BIG-IP  ***  
+Checking UDP iRules exists on BIG-IP ......
 
-Please enter BIG-IP Management IP to Clean IPFIX configuration :  10.192.74.68
-Please enter BIG-IP ADMIN USER :  admin
-Please enter BIG-IP PASSWORD :  xxxx
-Remove irules from the BIG-IP
-This Script is Used to  *** Remove  configuration from BIG-IP  ***  
+Uploading UDP iRules to BIG-IP .........
 
-Please enter BIG-IP Management IP to Clean IPFIX configuration :  
+Checking IPFIX Pool exists on BIG-IP ......
+
+IPFIX Pool Does not Exists on BIG-IP Creating .....
+
+Enter first IPFIX Sensor : 1.1.1.1
+Enter Second IPFIX Sensor : 1.1.1.2
+Enter Third IPFIX Sensor : 1.1.1.3
+Created .... IPFIX Pool and Members added 
+
+
+Creating IPFIX Log Destination ......
+Creating Log Publisher  ......
+Name: TetrationIPFIXPool
+Sensors list : 1.1.1.1:4739 
+Sensors list : 1.1.1.2:4739 
+Sensors list : 1.1.1.3:4739 
+Above Showing you IPFIX Pool on BIG-IP 
+
+Do you want to use the above shown IPFIX Pool say Y/N? y
+Appy iRules on all Virtual Server Y/N ? : n
+Please select which Virtual Server need iRules 
+
+
+
+Displaying all the Virtual Servers and iRules  ......
+ 
+ 
+Please make your selection 1: IPFIX Configuration
+                           2: Remove IPFIX Configuration
+                           3: Remove IPFIX iRules from Virtual Server
+                           4: Remove iRules from BIG-IP
+                           5: Exit
+
+Enter Your Choice : 
 
 ```
+
+
