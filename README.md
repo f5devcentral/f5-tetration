@@ -77,7 +77,29 @@ Please make your selection 1: IPFIX Configuration
                            4: Remove iRules from BIG-IP
                            5: Exit
 
-Enter Your Choice : 
+Enter Your Choice : 2
+Removing Publisher Configuration ........
+Removing IPFIX log Configuration ........
+Removing IPFIX Pool Configuration ........
+Please make your selection 1: IPFIX Configuration
+                           2: Remove IPFIX Configuration
+                           3: Remove IPFIX iRules from Virtual Server
+                           4: Remove iRules from BIG-IP
+                           5: Exit
+
+Enter Your Choice : 4
+Removing iRules /Common/Tetration_TCP_L4_ipfix from BIG-IP ......
+
+Removing iRules /Common/Tetration_UDP_L4_ipfix from BIG-IP ......
+
+Please make your selection 1: IPFIX Configuration
+                           2: Remove IPFIX Configuration
+                           3: Remove IPFIX iRules from Virtual Server
+                           4: Remove iRules from BIG-IP
+                           5: Exit
+
+Enter Your Choice : 5
+
 
 ```
 
