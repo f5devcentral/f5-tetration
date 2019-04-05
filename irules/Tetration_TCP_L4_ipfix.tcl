@@ -3,6 +3,7 @@ when RULE_INIT {
   set static::http_rule1_tmplt ""
 }
 
+
 # CLIENT_ACCEPTED event to initiate IPFIX destination and template
 when CLIENT_ACCEPTED {
   set start [clock clicks -milliseconds]
@@ -34,13 +35,14 @@ when CLIENT_ACCEPTED {
                                                           postPacketTotalCount \
                                                           postOctetDeltaCount \
                                                           postPacketDeltaCount \
-                                                          flowEndMilliseconds"]
+                                                          flowEndMilliseconds \ "]
+                                                          
   }
+  set rule1_msg1 [IPFIX::msg create $static::http_rule1_tmplt]
 }
 
 # SERVER_CONNECTED event to initiate flow data to Tetration and populate 5 tuples
 when SERVER_CONNECTED {
-  set rule1_msg1 [IPFIX::msg create $static::http_rule1_tmplt]
   set client_closed_flag 0
   set server_closed_flag 0
   IPFIX::msg set $rule1_msg1 flowStartMilliseconds $start
@@ -90,10 +92,7 @@ when SERVER_CLOSED {
   # when flow is completed, server to BIG-IP RESPONSE pkts and bytes count 
   IPFIX::msg set $rule1_msg1 octetDeltaCount [IP::stats bytes in]
   IPFIX::msg set $rule1_msg1 packetDeltaCount [IP::stats pkts in]
-  if { $client_closed_flag == 1} {
-    # send the IPFIX log
     IPFIX::destination send $static::http_rule1_dest $rule1_msg1
-  }
 }
 
 # CLIENT_CLOSED event to collect IP pkts and bytes count on clientside
@@ -107,8 +106,6 @@ when CLIENT_CLOSED {
   IPFIX::msg set $rule1_msg1 postPacketDeltaCount [IP::stats pkts out]
   # record the client closed time in ms
   IPFIX::msg set $rule1_msg1 flowEndMilliseconds [clock click -milliseconds]
-  if { $server_closed_flag == 1} {
     # send the IPFIX log
     IPFIX::destination send $static::http_rule1_dest $rule1_msg1
-  }
 }
