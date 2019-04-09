@@ -3,7 +3,7 @@ when HTTP_REQUEST {
    if { [HTTP::method] equals "GET" } {
     set username [ACCESS::session data get session.logon.last.username]
     IPFIX::msg set $rule1_msg1 userName $username
-   # log local0. "User $username attempted login from [IP::client_addr]:[TCP::client_port]"
+   #log local0. "User $username attempted login from [IP::client_addr]:[TCP::client_port]"
    }
 }
 
