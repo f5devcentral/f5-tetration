@@ -107,4 +107,4 @@ when CLIENT_CLOSED {
   IPFIX::msg set $rule1_msg1 flowEndMilliseconds [clock click -milliseconds]
     # send the IPFIX log
     IPFIX::destination send $http_rule1_dest $rule1_msg1 }
-# End of Irule
+    # End of Irule
