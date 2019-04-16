@@ -108,3 +108,4 @@ when CLIENT_CLOSED {
     # send the IPFIX log
     IPFIX::destination send $http_rule1_dest $rule1_msg1 }
 }
+# End of Irule
