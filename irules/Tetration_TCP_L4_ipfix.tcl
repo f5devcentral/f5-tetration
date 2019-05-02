@@ -1,19 +1,19 @@
-# ver1 This irule is used for IPFIX
-when HTTP_REQUEST {
-   if { [HTTP::method] equals "GET" } {
-    set username [ACCESS::session data get session.logon.last.username]
-    IPFIX::msg set $rule1_msg1 userName $username
-   #log local0. "User $username attempted login from [IP::client_addr]:[TCP::client_port]"
-   }
+when RULE_INIT {
+  set static::http_rule1_dest ""
+  set static::http_rule1_tmplt ""
 }
+
 
 # CLIENT_ACCEPTED event to initiate IPFIX destination and template
 when CLIENT_ACCEPTED {
   set start [clock clicks -milliseconds]
-  # open the logging destination if it has not been opened yet
-  set http_rule1_dest [IPFIX::destination open -publisher /Common/ipfix-pub-1]
-  # if the template has not been created yet, create the template
-  set http_rule1_tmplt [IPFIX::template create "flowStartMilliseconds \
+  if { $static::http_rule1_dest == ""} {
+    # open the logging destination if it has not been opened yet
+    set static::http_rule1_dest [IPFIX::destination open -publisher /Common/ipfix-pub-1]
+  }
+  if { $static::http_rule1_tmplt == ""} {
+    # if the template has not been created yet, create the template
+    set static::http_rule1_tmplt [IPFIX::template create "flowStartMilliseconds \
                                                           sourceIPv4Address \
                                                           sourceIPv6Address  \
                                                           destinationIPv4Address \
@@ -35,9 +35,10 @@ when CLIENT_ACCEPTED {
                                                           postPacketTotalCount \
                                                           postOctetDeltaCount \
                                                           postPacketDeltaCount \
-                                                          flowEndMilliseconds \
-                                                          userName"]
-  set rule1_msg1 [IPFIX::msg create $http_rule1_tmplt]
+                                                          flowEndMilliseconds \ "]
+                                                          
+  }
+  set rule1_msg1 [IPFIX::msg create $static::http_rule1_tmplt]
 }
 
 # SERVER_CONNECTED event to initiate flow data to Tetration and populate 5 tuples
@@ -91,7 +92,7 @@ when SERVER_CLOSED {
   # when flow is completed, server to BIG-IP RESPONSE pkts and bytes count 
   IPFIX::msg set $rule1_msg1 octetDeltaCount [IP::stats bytes in]
   IPFIX::msg set $rule1_msg1 packetDeltaCount [IP::stats pkts in]
-    IPFIX::destination send $http_rule1_dest $rule1_msg1
+    IPFIX::destination send $static::http_rule1_dest $rule1_msg1
 }
 
 # CLIENT_CLOSED event to collect IP pkts and bytes count on clientside
@@ -106,5 +107,5 @@ when CLIENT_CLOSED {
   # record the client closed time in ms
   IPFIX::msg set $rule1_msg1 flowEndMilliseconds [clock click -milliseconds]
     # send the IPFIX log
-    IPFIX::destination send $http_rule1_dest $rule1_msg1 }
-    # End of Irule
+    IPFIX::destination send $static::http_rule1_dest $rule1_msg1
+}
