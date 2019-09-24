@@ -8,7 +8,7 @@ when CLIENT_ACCEPTED {
   set start [clock clicks -milliseconds]
   if { $static::http_rule1_dest == ""} {
     # open the logging destination if it has not been opened yet
-    set static::http_rule1_dest [IPFIX::destination open -publisher /Common/tetrationpub]
+    set static::http_rule1_dest [IPFIX::destination open -publisher /Common/ipfix-pub-1]
   }
   if { $static::http_rule1_tmplt == ""} {
     # if the template has not been created yet, create the template
