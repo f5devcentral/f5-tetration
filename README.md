@@ -7,12 +7,15 @@ Repo has two directories [irules](https://github.com/f5devcentral/f5-tetration/t
 ### Disclaimer : 
 1. Integration is tested with v12.0 and above
 2. Script is tested with MAC OS terminal only. To run use ./f5tetv1 from MAc OS terminal
+3. Added Script which runs on linux (Ubuntu 18.04.4 LTS) file name is f5tetlx
 
 
 ### How to use this Repo  
 
-If you are using MAC OS just download the executable script https://github.com/f5devcentral/f5-tetration/raw/master/f5tetv1
+- If you are using MAC OS just download the executable script https://github.com/f5devcentral/f5-tetration/raw/master/f5tetv1
 and to run the script just issue ./f5tetv1  from MAC OS terminal
+- If you are using Linux (Ubuntu 18.04.4 LTS) just download executable script https://github.com/f5devcentral/f5-tetration/raw/master/f5tetlx
+and to run do chmod 777 f5tetlx and issue ./f5tetlx from linux terminal
 
 ```
 Enter your BIG-IP Management IP: x.x.x.x
