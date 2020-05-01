@@ -6,8 +6,10 @@ Repo has two directories [irules](https://github.com/f5devcentral/f5-tetration/t
 
 ### Disclaimer : 
 1. Integration is tested with v12.0 and above
-2. Script is tested with MAC OS terminal only. To run use ./f5tetv1 from MAc OS terminal
+2. Script is tested with MAC OS terminal. To run use ./f5tetv1 from MAc OS terminal
 3. Added Script which runs on linux (Ubuntu 18.04.4 LTS) file name is f5tetlx
+4. Added windows support for the script, file name f5tet.exe
+5. The script will add IPFIX & iRules to in Common Partition only
 
 
 ### How to use this Repo  
