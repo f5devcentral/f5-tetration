@@ -16,11 +16,8 @@ Repo has two directories [irules](https://github.com/f5devcentral/f5-tetration/t
 and to run the script just issue ./f5tetv1  from MAC OS terminal
 - If you are using Linux (Ubuntu 18.04.4 LTS) just download executable script https://github.com/f5devcentral/f5-tetration/raw/master/f5tetlx
 and to run do chmod 777 f5tetlx and issue ./f5tetlx from linux terminal
-- If you are using Windows (Windows server 2019) just download executable script https://github.com/scshitole/ipfixGo/raw/master/f5tet.exe
-and to run f5tet from command prompt
-
-
-
+- If you are using Windows (Windows server 2019) just download executable script https://github.com/f5devcentral/f5-tetration/raw/master/f5tet.exe
+and to run issue f5tet from wndows command prompt
 
 
 ```
